@@ -20,7 +20,16 @@ def call_llm_api(prompt, api_key=None):
         "messages": [{"role": "user", "content": prompt}],
     }
     response = requests.post(url, json=data, headers=headers)
-    return response.json()["choices"][0]["message"]["content"]
+    try:
+        resp_json = response.json()
+        if "choices" in resp_json and resp_json["choices"]:
+            return resp_json["choices"][0]["message"]["content"]
+        else:
+            st.error(f"LLM API error: {resp_json.get('error', 'Unknown error')}")
+            return ""
+    except Exception as e:
+        st.error(f"Failed to parse LLM API response: {e}")
+        return ""
 
 def fill_docx_template(template_path, key_values):
     doc = docx.Document(template_path)
