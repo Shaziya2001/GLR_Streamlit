@@ -44,8 +44,9 @@ st.title("Insurance Template Filler")
 template_file = st.file_uploader("Upload insurance template (.docx)", type="docx")
 pdf_files = st.file_uploader("Upload photo reports (.pdf)", type="pdf", accept_multiple_files=True)
 api_key = st.text_input("OpenRouter API Key (optional)", type="password")
+output_filename = st.text_input("Output file name", value="Completed GLR Word Doc.docx")
 
-if template_file and pdf_files:
+if template_file and pdf_files and output_filename:
     all_text = ""
     for pdf in pdf_files:
         all_text += extract_text_from_pdf(pdf)
@@ -63,11 +64,12 @@ if template_file and pdf_files:
         tmp_path = tmp.name
 
     filled_doc = fill_docx_template(tmp_path, key_values)
-    output_path = os.path.join("task_3_output", "filled_template.docx")
-    os.makedirs("task_3_output", exist_ok=True)
+    output_dir = "Output"
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, output_filename)
     filled_doc.save(output_path)
 
     with open(output_path, "rb") as f:
-        st.download_button("Download filled template", f, file_name="filled_template.docx")
+        st.download_button("Download filled template", f, file_name=output_filename)
 
-    st.success("Template filled and ready for download!")
+    st.success(f"Template filled and saved to {output_path}!")
