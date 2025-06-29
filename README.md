@@ -36,7 +36,8 @@ Automate insurance template filling using photo reports and LLMs via a simple St
 - Demo video (`task_3.mp4`) should show end-to-end working as per assignment.
 
 ## Directory Structure
-task_3_glr_pipeline/
+task_3_glr_pipeline
+/
 ├── task_3_code.py 
 ├── requirements.txt 
 ├── README.md 
